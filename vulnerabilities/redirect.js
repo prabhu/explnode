@@ -1,21 +1,29 @@
-
-console.log('WIP')
 const express = require('express');
 const router = express.Router()
 
+// Have an allowlist of redirect urls
+const ALLOWED_ROUTES = {
+    "reports": "/reports/overview",
+    "findings": "/findings/summary"
+}
+
 router.get('/login',function(req, res){
-    let followPath = req.query.path;
     if(req.session.isAuthenticated()){
-        res.redirect('http://example.com/'+followPath); //false positive
+        res.redirect('/dashboard');
     }else{
-        res.redirect('/');
+        res.redirect('/login');
     }
-}); 
+});
 
 router.get('/goto',function(req, res){
-    let url = encodeURI(req.query.url); //vulnerability
-    res.redirect(url);
-}); 
+    const route_name = encodeURI(req.query.route_name);
+    const url = ALLOWED_ROUTES[route_name];
+    if (url) {
+        res.redirect(url);
+    } else {
+        res.redirect('/login');
+    }
+});
 
 
 module.exports = router
