@@ -7,19 +7,25 @@ const ALLOWED_ROUTES = {
     "findings": "/findings/summary"
 }
 
-router.get('/login',function(req, res){
-    if(req.session.isAuthenticated()){
-        res.redirect('/dashboard');
-    }else{
-        res.redirect('/login');
+const checkAuthentication = (req,res,next) => {
+    if(req.isAuthenticated()){
+        //req.isAuthenticated() will return true if user is logged in
+        next();
+    } else{
+        res.redirect("/login");
     }
+}
+
+// Prevent re-authentication by using middleware
+router.get('/checklogin', checkAuthentication, function(req, res){
+    res.redirect('/dashboard');
 });
 
-router.get('/goto',function(req, res){
-    const route_name = encodeURI(req.query.route_name);
-    const url = ALLOWED_ROUTES[route_name];
-    if (url) {
-        res.redirect(url);
+router.get('/goto', checkAuthentication, function(req, res) {
+    const route_name = req.query.route_name;
+    const route_url = ALLOWED_ROUTES[route_name.toLowerCase()];
+    if (route_url) {
+        res.redirect(route_url);
     } else {
         res.redirect('/login');
     }
