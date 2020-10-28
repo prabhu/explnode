@@ -10,14 +10,12 @@ const connection = mysql.createConnection({
   password : config.MYSQL_PASSWORD,
   database : config.MYSQL_DB_NAME,
 });
- 
+
 connection.connect();
 
 router.get('/example1/user/:id', (req,res) => {
     let userId = req.params.id;
-    let query = {
-        sql : "SELECT * FROM users WHERE id=" + userId
-    }
+    let query = "SELECT * FROM users WHERE id=" + userId;
     connection.query(query,(err, result) => {
         res.json(result);
     });
