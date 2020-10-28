@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router()
-
 const config = require('../../config')
 const mysql      = require('mysql');
 const connection = mysql.createConnection({
@@ -15,7 +14,7 @@ connection.connect();
 
 router.get('/example1/user/:id',  (req,res) => {
     let userId = req.params.id;
-    connection.query("SELECT * FROM users WHERE id=" + userId,(err, result) => {
+    connection.query("SELECT * FROM users WHERE id = ?", [userId], (err, result) => {
         res.json(result);
     });
 })
@@ -23,8 +22,8 @@ router.get('/example1/user/:id',  (req,res) => {
 router.get('/example2/user/:id',  (req,res) => {
     let userId = req.params.id;
     connection.query({
-        sql : "SELECT * FROM users WHERE id=" +userId
-    },(err, result) => {
+        sql : "SELECT * FROM users WHERE id = ?"
+    }, [userId], (err, result) => {
         res.json(result);
     });
 })
