@@ -13,6 +13,8 @@ const CMD_ALLOWLIST = {
 const GZIP_ALLOW_DIR = "/data";
 
 router.post('/ping', (req,res) => {
+    // TODO: Fix this vulnerability as an exercise.
+    // Validate the url and only support an allowlist for domain names to avoid DDoS!
     exec(req.body.url, (error) => {
         if (error) {
             return res.send('error');
