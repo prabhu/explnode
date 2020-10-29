@@ -1,6 +1,6 @@
 # Vulnerability Discovery via Ocular Queries
 
-### Startup Ocular Shell 
+### Startup Ocular Shell
 
 ```bash
 sl ocular
@@ -14,7 +14,7 @@ Ocular shell starts up and looks like this:
 ██║   ██║██║     ██║   ██║██║     ███████║██████╔╝
 ██║   ██║██║     ██║   ██║██║     ██╔══██║██╔══██╗
 ╚██████╔╝╚██████╗╚██████╔╝███████╗██║  ██║██║  ██║
- ╚═════╝  ╚═════╝ ╚═════╝ ╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝ 
+ ╚═════╝  ╚═════╝ ╚═════╝ ╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝
 Version: 0.3.114
 Type `help` or `browse(help)` to begin
 ocular>
@@ -22,16 +22,16 @@ ocular>
 
 > :information_source: Note: Following commands are now run on the Ocular Shell
 
-### Import Code and create a CPG 
+### Import Code and create a CPG
 
 ```scala
-val CODE_PATH = "/Users/chetanconikee/pgithub/explnode"
-val PACKAGE_FILE = "/Users/chetanconikee/pgithub/explnode/package.json"
+val CODE_PATH = "/home/codespace/workspace/explnode"
+val PACKAGE_FILE = "/home/codespace/workspace/explnode/package.json"
 
 importCode(CODE_PATH)
 ```
 
-### Apply Policies to graph  
+### Apply Policies to graph
 
 ```scala
 run.securityprofile
@@ -55,10 +55,10 @@ getDependencies(PACKAGE_FILE)
 ### Initialize method names / signatures (example)
 
 ```scala
-val CMD_INJECTION = ".*(spawn).*"
+val CMD_INJECTION = ".*(spawn|exec|execSync|spawnSync).*"
 val CONTROL_LOOP = "For.*"
 val MEM_OP = ".*(push).*"
-val NOSQLi = ".*(insertOne).*"
+val NOSQLi = ".*(insertOne|findOne).*"
 val REDIRECT = ".*(redirect).*"
 val ReDOS = ".*(test).*"
 val SQLi = ".*(query).*"
@@ -77,9 +77,9 @@ Copy paste the following directly on the ocular shell to create a new class and 
 case class AttackSurface(shortMethodName : String, fullMethodName : String, route : String)
 
 def getAttackSurface(cpg: io.shiftleft.codepropertygraph.Cpg) : List[AttackSurface] = {
-	cpg.source.method.map { m => 
-		AttackSurface(m.name, 
-			m.fullName, 
+	cpg.source.method.map { m =>
+		AttackSurface(m.name,
+			m.fullName,
 			m.tagList.filter(t => t.name == "EXPOSED_METHOD_ROUTE").map(_.value).mkString(""))
 	}.l
 }
@@ -94,7 +94,7 @@ getAttackSurface(cpg)
 ### Get Exposed Sources in Application (this represents all exposed API endpoints in code)
 
 ```scala
-val source = cpg.method.filter(_.tag.name("EXPOSED_METHOD")).parameter
+val source = cpg.method.where(_.tag.name("EXPOSED_METHOD")).parameter
 val api = cpg.method.name(".*=>.*").parameter
 ```
 
@@ -127,7 +127,7 @@ res8: List[String] = List(
 ### 2. Denial of Service Attack (`loop.js`)
 
 ```scala
-cpg.call.code(MEM_OP).inAst.isControlStructure.parserTypeName(CONTROL_LOOP).code.l 
+cpg.call.code(MEM_OP).inAst.isControlStructure.parserTypeName(CONTROL_LOOP).code.l
 
 res31: List[String] = List(
   """for (var i = 0; i < obj.length; i++) {
@@ -138,7 +138,7 @@ res31: List[String] = List(
     }"""
 )
 
-val sink = cpg.call.code(MEM_OP).filter(_.inAst.isControlStructure.parserTypeName(CONTROL_LOOP))
+val sink = cpg.call.code(MEM_OP).where(_.inAst.isControlStructure.parserTypeName(CONTROL_LOOP))
 
 sink.reachableBy(source).flows.p
 
@@ -422,7 +422,7 @@ res35: List[String] = List(
 
 ### 9. All Findings (based on automated security profile)
 
-Table of Findings in text format: 
+Table of Findings in text format:
 
 ```scala
 cpg.finding.p
