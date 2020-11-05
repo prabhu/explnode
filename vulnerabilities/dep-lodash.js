@@ -2,18 +2,18 @@ const express = require('express');
 const router = express.Router()
 
 const lodash = require('lodash');
- 
+
 //if req.body.config == '{"constructor": {"prototype": {"isAdmin": true}}}' it will bypass the authentication
 function check(req, res) {
 
     let config = {};
     lodash.defaultsDeep(config, JSON.parse(req.body.config));
-    
-    let user = getCurrentUser();
+
+    let user = getCurrentUser(config);
     if(!user){
       user = {};
     }
-    
+
     if (user.isAdmin && user.isAdmin === true) {
         res.send('Welcome Admin')
     }else{
@@ -22,8 +22,8 @@ function check(req, res) {
 }
 
 //fake function that get current user from session or db
-function getCurrentUser(){
-  return false;
+function getCurrentUser(config){
+  return config;
 }
 
 
