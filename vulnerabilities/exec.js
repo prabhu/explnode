@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router()
 
 const { exec, spawn }  = require('child_process');
-
+const execa = require('execa');
 
 router.post('/ping', (req,res) => {
     exec(req.body.url, (error) => {
@@ -37,5 +37,15 @@ function runMe(cmd,res){
         res.send(`child process exited with code ${code}`);
     });
 }
+
+router.get('/run2', (req,res) => {
+   let cmd = req.params.cmd;
+   execa.sync(cmd, []).stdout.pipe(res);
+});
+
+router.get('/run3', (req,res) => {
+   let cmd3 = req.params.cmd;
+   execa(cmd3, []).stdout.pipe(res);
+});
 
 module.exports = router

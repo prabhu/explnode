@@ -14,10 +14,13 @@
   "license": "Apache",
   "homepage": "",
   "dependencies": {
+    "@koa/router": "^10.0.0",
     "body-parser": "^1.19.0",
     "dotenv": "^8.2.0",
+    "execa": "^4.1.0",
     "express": "^4.17.1",
     "faker": "^4.1.0",
+    "koa": "^2.13.0",
     "lodash": "^4.17.11",
     "mongodb": "^3.5.6",
     "mysql": "^2.18.1",
