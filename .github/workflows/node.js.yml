@@ -20,7 +20,7 @@ jobs:
       run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
       id: extract_branch
     - name: NextGen Static Analysis
-      run: ${GITHUB_WORKSPACE}/sl analyze --wait --app js-lesson --tag branch=${{ github.head_ref || steps.extract_branch.outputs.branch }} --js --cpg .
+      run: ${GITHUB_WORKSPACE}/sl analyze --verbose --wait --app js-lesson --tag branch=${{ github.head_ref || steps.extract_branch.outputs.branch }} --js --sca --cpg .
       env:
         SHIFTLEFT_ACCESS_TOKEN: ${{ secrets.SHIFTLEFT_ACCESS_TOKEN }}
   Build-Rules: 
