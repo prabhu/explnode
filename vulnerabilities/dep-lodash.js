@@ -52,6 +52,31 @@ var pathAssignment = (obj, path, value) => {
     return obj;
 };
 
+function isValidUserConfig(userConfig) {
+  if (!userConfig) {
+    return false;
+  }
+  // Insufficient. Check constructor argument as well
+  if (userConfig['__proto__'] || userConfig['prototype']) {
+    return false;
+  }
+  return true;
+}
+
+function isValidUserConfigAlt(userConfig) {
+  if (!userConfig) {
+    return false;
+  }
+  for (var k in userConfig) {
+    // Insufficient. Check for prototype and constructor as well
+    if (userConfig[k] === '__proto__') {
+        return false;
+    }
+  }
+  return true;
+}
+
+
 router.post('/check-user',check)
 
 router.get('/example1/user/:userConfig',  (req,res) => {
@@ -66,6 +91,24 @@ router.get('/example2/user/:userConfig/:userPath',  (req,res) => {
     let config = {}
     pathAssignment(config, req.params.userPath, userConfig);
     res.send("Config is" + config);
+});
+
+router.get('/example3/user/:userConfig',  (req,res) => {
+    let userConfig = req.params.userConfig;
+    let validationFailed = false;
+    // Validate userConfig here
+    if (!isValidUserConfig(userConfig)) {
+      validationFailed = true;
+    }
+    if (!isValidUserConfigAlt(userConfig)) {
+      res.send('Validation error');
+    }
+    let user = getCurrentUser(config);
+    if (user.isAdmin && user.isAdmin === true) {
+        res.send('Welcome Admin')
+    }else{
+        res.send('Welcome User')
+    }
 });
 
 module.exports = router
