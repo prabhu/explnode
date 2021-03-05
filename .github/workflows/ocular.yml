@@ -28,7 +28,7 @@ jobs:
     - name: Convert to sarif
       run: |
         sudo pip install joern2sarif
-        joern2sarif -i ${GITHUB_WORKSPACE}/reports/findings.json -o ${GITHUB_WORKSPACE}/reports/joern-findings.sarif
+        joern2sarif -t ocular -i ${GITHUB_WORKSPACE}/reports/findings.json -o ${GITHUB_WORKSPACE}/reports/ocular-findings.sarif
       env:
         WORKSPACE: ""
     - name: Upload scan reports
