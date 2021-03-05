@@ -3,7 +3,7 @@ import $file.utils
 
 def executeSP(cpg: Cpg, resultFile: String) = {
 	cpg.finding.p |> resultFile
-	cpg.finding.toJson |> resultFile.replace(".md", ".json")
+	cpg.finding.toJsonPretty |> resultFile.replace(".md", ".json")
 }
 
 @doc("")
