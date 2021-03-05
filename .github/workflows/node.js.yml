@@ -9,7 +9,7 @@ on:
 
 jobs:
   NextGen-Static-Analysis:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
     - uses: actions/checkout@v2
     - name: Download ShiftLeft CLI
@@ -24,7 +24,7 @@ jobs:
       env:
         SHIFTLEFT_ACCESS_TOKEN: ${{ secrets.SHIFTLEFT_ACCESS_TOKEN }}
   Build-Rules: 
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     needs: NextGen-Static-Analysis
     steps:
     - uses: actions/checkout@v2
