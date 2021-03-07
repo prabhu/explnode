@@ -19,7 +19,7 @@ jobs:
       run: |
         mkdir -p ${GITHUB_WORKSPACE}/reports
         ${GITHUB_WORKSPACE}/sl auth --no-diagnostic
-        ${GITHUB_WORKSPACE}/sl ocular -- -J-Xmx7G --script oc_scripts/scan.sc --params payload=${GITHUB_WORKSPACE},payloadType=JS,resultFile=${GITHUB_WORKSPACE}/reports/findings.md,graphsDir=${GITHUB_WORKSPACE}/reports
+        ${GITHUB_WORKSPACE}/sl ocular -- -J-Xmx7G --script oc_scripts/scan.sc --params payload=${GITHUB_WORKSPACE},payloadType=JS,resultFile=${GITHUB_WORKSPACE}/reports/findings.md
       env:
         SHIFTLEFT_ACCESS_TOKEN: ${{ secrets.SHIFTLEFT_ACCESS_TOKEN }}
     - uses: actions/setup-python@v2

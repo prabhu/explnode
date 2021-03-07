@@ -9,7 +9,7 @@ def executeSP(cpg: Cpg, resultFile: String) = {
 	cpg.finding.toJsonPretty |> resultFile.replace(".md", ".json")
 }
 
-@main def execute(payload: String, payloadType: String, resultFile: String, graphsDir: String) : Boolean = {
+@main def execute(payload: String, payloadType: String, resultFile: String) : Boolean = {
     if(workflow.creatingCpg(payload,payloadType)) {
     	executeSP(cpg, resultFile)
     	printf("[✔] Saved results to %s\n", resultFile)
