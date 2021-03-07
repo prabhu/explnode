@@ -2,6 +2,7 @@ import $file.workflow
 import $file.utils
 
 def executeSP(cpg: Cpg, resultFile: String) = {
+	cpg.runScript("jsrules.sc")
 	cpg.finding.p |> resultFile
 	cpg.finding.toJsonPretty |> resultFile.replace(".md", ".json")
 }
