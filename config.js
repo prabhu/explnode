@@ -8,5 +8,15 @@ module.exports = {
     MYSQL_PORT: process.env.MYSQL_PORT || "3306",
     MYSQL_USER: process.env.MYSQL_USER || "root",
     MYSQL_PASSWORD: process.env.MYSQL_PASSWORD || "root",
-    MYSQL_DB_NAME: process.env.MYSQL_DB_NAME || "CVNA_DB"
+    MYSQL_DB_NAME: process.env.MYSQL_DB_NAME || "CVNA_DB",
+    STRIPE_CLIENT_SECRET_KEY: 'AKIA2E0A8F3B244C9986'
 }
+
+
+
+
+
+
+
+
+
