@@ -3,13 +3,13 @@ const router = express.Router()
 
 router.get('/greeting', (req, res) => {
     const { username, password }  = req.query;
-    console.log(password);
+    // console.log(password);
     res.send("<h1> Hello World</h1>");
 });
 
 router.get('/greeting2', (req, res) => {
     if(req.session.isAuthenticated()) {
-        console.log(req.query.password); // data leak
+        // console.log(req.query.password); // data leak
     }
     res.send("<h1> Hello World</h1>");
 });
@@ -21,7 +21,7 @@ router.get('/greeting3', (req, res) => {
         data.username = username;
         data.password = password;
     }
-    console.log(data); // data leak
+    // console.log(data); // data leak
     res.send("<h1> Hello World</h1>");
 });
 
